@@ -2,7 +2,7 @@
 Efficient IPv6 address discovery algorithm RDET which combines density, information entropy and space tree.  RDET is short for detective, which means that  discovery new active IPv6 addresses  in the IPv6 address space.
 
 ## Dependencies and installation
-RDET is compateible with Python3.x. You can install the requirements for your version. Besides, RDET uses the following packages:
+AddrMiner-S is compateible with Python3.x. You can install the requirements for your version. Besides, RDET uses the following packages:
  
 * argparse
 ```
