@@ -1,5 +1,6 @@
-# base model 主模型在model version/Thompson 中
-Efficient IPv6 address discovery algorithm RDET which combines density, information entropy and space tree.  RDET is short for detective, which means that  discovery new active IPv6 addresses  in the IPv6 address space.
+# AddrMiner-v2.0
+AddrMiner-v2.0 is an improved global active IPv6 address detection system based on AddrMiner-v1.0. The specific improvements encompass two aspects: On the one hand, it simplifies the address detection architecture by dividing address detection into two detection scenarios(seedless address scenario<=>AddrMiner-N, and seeded address scenario<=>AddrMiner-S), making it more practical for deployment. On the other hand, it introduces a multi-level association policy (MLAP) to enhance further the coverage and resource utilization of seedless regional detection.
+
 
 ## Dependencies and installation
 AddrMiner-S is compateible with Python3.x. You can install the requirements for your version. Besides, RDET uses the following packages:
