@@ -68,9 +68,8 @@ sudo make install
 
 Input data is contained in the *Data* folder, and *whois* information is contained in the *whois* folder.
 
-Input data is contained in the *Data* folder, and *whois* information is contained in the *whois* folder.
 
-
+<span style="color:blue">Please note that we have only provided a portion of the seed addresses and *whois* information. For full data, please obtain them from other channels.</span>
 <font color="red">Please note that we have only provided a portion of the seed addresses and *whois* information. For full data, please obtain them from other channels.</font>
 
 <font color="blue">e.g.， </font> 
