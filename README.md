@@ -136,8 +136,11 @@ sudo make install
 
 Input data is contained in the *Data* folder, and *whois* information is contained in the *whois* folder.
 
+<font color="red">Please note that we have only provided a portion of the seed addresses and *whois* information. For full data, please obtain them from other channels.</font>
+<font color="blue">
+ e.g.，seed addresses form https://addrminer.github.io/IPv6_hitlist.github.io/#; whois information from Regional Internet Registry（RIR)
+ </font>
 
-<span style="color:red">Please note that we have only provided a portion of the seed addresses and *whois* information. For full data, please obtain them from other channels. eg，seed addresses form https://addrminer.github.io/IPv6_hitlist.github.io/#; whois information from Regional Internet Registry（RIR）</span>
 
 | file                 | Introduction             |
 | -------------------- | ------------------------ |
