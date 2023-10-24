@@ -88,7 +88,8 @@ Input data is contained in the *Data* folder, and *whois* information is contain
 ### **Parameters**
 
 - input_path: type=str, path of input IPv6 addresses
-- IPv6: type=str, local 
+- bgp_path: type=str, default='Data/bgp-n_1000', path of seedless BGPs
+- IPv6: type=str, local IPv6 address
 - budget: type=int, quantity of addresses detected by each BGP
 - miniBudget: type=int, default=4, quantity of addresses detected by each BGP in prescan stage
 - prescan_proportion: type=float, default=0.1, proportion of budget used in prescan stage
