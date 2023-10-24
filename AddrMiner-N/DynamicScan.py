@@ -195,36 +195,7 @@ def scan_feedback2(id,nodes, ipv6: str, batch_size=100000, epoch=10, targetfile=
         writeFile(target, active, targetfile, activefile, mode=False)
     return target_num, active_num
 
-def main(args, id = 0, num_thread = 1):
-    input_path = args.input_path
-    ipv6 = args.IPv6
-    budget = args.budget
-    miniBudget = args.miniBudget
-    epoch = args.epoch
-    prescan_proportion = args.prescan_proportion
-    delta = 64
-    prefixs = []
-    save_target = False
-
-    if os.path.exists('result'):
-        shutil.rmtree('result')
-    os.mkdir('result')
-    if os.path.exists('zmap'):
-        shutil.rmtree('zmap')
-    os.mkdir('zmap')
-
-    activefile = 'result/active_epoch{}budget{}_id{}.txt'.format(epoch, budget, id)
-    targetfile = 'result/target_epoch{}budget{}_id{}.txt'.format(epoch, budget, id)
-    logfile = 'result/epoch{}budget{}_id{}.log'.format(epoch, budget, id)
-    activefold = f'result/correlation_{id}'
-    with open('Data/bgp-n_1000', 'r') as f:
-        for line in f.readlines():
-            prefixs.append(line.strip())
-    # 多线程
-    num_prefixs = len(prefixs)
-    if num_thread != 1:
-        prefixs = prefixs[(int(id))*num_prefixs//num_thread:(int(id)+1)*num_prefixs//num_thread]
-
+def pattern_generate(input_path, delta=64):
     '''
     构建地址模式库
     '''
@@ -291,6 +262,29 @@ def main(args, id = 0, num_thread = 1):
             bgp_with_patterns[bgp].append(node)
     with open('Data/bgp_with_patterns_clean.pkl','wb') as f:
         pkl.dump(bgp_with_patterns,f)
+
+
+def MLAP(args, id = 0, num_thread = 1):
+    ipv6 = args.IPv6
+    budget = args.budget
+    miniBudget = args.miniBudget
+    epoch = args.epoch
+    prescan_proportion = args.prescan_proportion
+    prefixs = []
+    save_target = False
+    
+    activefile = 'result/active_epoch{}budget{}_id{}.txt'.format(epoch, budget, id)
+    targetfile = 'result/target_epoch{}budget{}_id{}.txt'.format(epoch, budget, id)
+    logfile = 'result/epoch{}budget{}_id{}.log'.format(epoch, budget, id)
+    activefold = f'result/correlation_{id}'
+    with open(args.bgp_path, 'r') as f:
+        for line in f.readlines():
+            prefixs.append(line.strip())
+
+    # 多线程
+    num_prefixs = len(prefixs)
+    if num_thread != 1:
+        prefixs = prefixs[(int(id))*num_prefixs//num_thread:(int(id)+1)*num_prefixs//num_thread]
 
     with open('Data/bgp_with_patterns_clean.pkl','rb') as f:
         bgp_with_patterns = pkl.load(f)
@@ -437,6 +431,7 @@ def main(args, id = 0, num_thread = 1):
 if __name__ == "__main__":
     parse=argparse.ArgumentParser()
     parse.add_argument('--input_path', type=str, help='path of input IPv6 addresses')
+    parse.add_argument('--bgp_path', type=str, default='Data/bgp-n_1000', help='path of seedless BGPs')
     parse.add_argument('--IPv6',type=str,help='local IPv6 address')
     parse.add_argument('--budget',type=int,help='quantity of addresses detected by each BGP')
     parse.add_argument('--miniBudget',type=int, default=4, help='quantity of addresses detected by each BGP in prescan stage')
@@ -445,12 +440,23 @@ if __name__ == "__main__":
     parse.add_argument('--num_thread',type=int, default=1, help='number of threads')
     args=parse.parse_args()
 
+    # 生成模式，此过程较为耗时
+    if not os.path.exists('Data/nodes'):
+        pattern_generate(args.input_path)
+
+    if os.path.exists('result'):
+        shutil.rmtree('result')
+    os.mkdir('result')
+    if os.path.exists('zmap'):
+        shutil.rmtree('zmap')
+    os.mkdir('zmap')
+
     if args.num_thread == 0:
-        main(args, 0, args.num_thread)
+        MLAP(args, 0, args.num_thread)
     else:
         thread = []
         for i in range(args.num_thread):
-            thread.append(threading.Thread(name=f't{i}',target=main,args=(args, f'{i}', args.num_thread)))
+            thread.append(threading.Thread(name=f't{i}',target=MLAP,args=(args, f'{i}', args.num_thread)))
         for i in range(args.num_thread):
             thread[i].start()
             time.sleep(1)
